@@ -27,18 +27,17 @@ import paramiko
 @app.route('/ping', methods=['POST'])
 def execute_ping():
     
-    # Perform ping using SSH
+    # Perfrorm ping using SSH
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     
     try:
         ssh_client.connect(hostname='', username='', password='')
         
-        # Execute ping command
         command = f'ping 8.8.8.8'
         stdout, stderr = ssh_client.exec_command(command)
         
-        # Read command output
+        
         output = stdout.read().decode('utf-8')
         error = stderr.read().decode('utf-8')
         
