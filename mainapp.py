@@ -1,5 +1,5 @@
-from flask import Flask, render_template, jsonify
-
+from flask import Flask, render_template, jsonify, request
+import paramiko
 
 
 app = Flask(__name__)
@@ -19,6 +19,38 @@ def main():
 # @app.route('/contact-us')
 # def contact_us():
 #     return render_template('contact_us.html')
+
+from flask import Flask, request, jsonify
+import paramiko
+
+
+@app.route('/ping', methods=['POST'])
+def execute_ping():
+    
+    # Perform ping using SSH
+    ssh_client = paramiko.SSHClient()
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    try:
+        ssh_client.connect(hostname='', username='', password='')
+        
+        # Execute ping command
+        command = f'ping 8.8.8.8'
+        stdout, stderr = ssh_client.exec_command(command)
+        
+        # Read command output
+        output = stdout.read().decode('utf-8')
+        error = stderr.read().decode('utf-8')
+        
+        ssh_client.close()
+        
+        # Check for errors
+        if error:
+            return jsonify({'error': error}), 500
+        else:
+            return jsonify({'output': output}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/help')
 def help():

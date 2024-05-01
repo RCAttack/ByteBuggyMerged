@@ -66,6 +66,11 @@
 
     <button onclick="runCommand()" style = "border-radius: 5px;">Test terminal</button>
 
+    <br>
+    <br>
+
+    <button id="pingButton">Ping Server</button>
+
 
 </section>
 
@@ -152,6 +157,28 @@
     document.getElementById("cls").onclick = function() {
         document.getElementById("log").value = ""; 
     };
+
+    document.getElementById('pingButton').addEventListener('click', function() {
+            
+                fetch('/ping', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        alert('Ping output:\n' + data.output);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            
+        });
 
    
 </script>
