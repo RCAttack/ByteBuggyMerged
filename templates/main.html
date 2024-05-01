@@ -46,8 +46,12 @@
             <option>WPA handshake</option>
         </select>
         <button id="button4" class ="button-transparent" onclick="startPasswordCrack()" style = "border-radius: 5px;">Start Password Crack</button>
-        <div>Time of completion: <span id="completion-time">00:00</span></div>
+        <div>Time of completion: <span id="completion-time">00:00</span>
+            <br>
+            <label id="timer"></label>
+        </div>
         <div>Password found: <span id="password-found">N/A</span></div>
+        
     </section>
 
     <br>
@@ -96,6 +100,7 @@
     function runCommand() {
             fetch('/run-command', { method: 'POST' })
                 .then(response => response.json())
+
                 .then(data => {
                     if (data.error) {
                         document.getElementById('log').textContent = 'Error: ' + data.error;
@@ -108,7 +113,29 @@
                 });
         }
 
+    function updateTimer() {
+        var timerLabel = document.getElementById('timer');
+        var currentTime = new Date();
+        var hours = currentTime.getHours();
+        var minutes = currentTime.getMinutes();
+        var seconds = currentTime.getSeconds();
 
+        // Add leading zeros to single digit numbers
+        hours = (hours < 10 ? '0' : '') + hours;
+        minutes = (minutes < 10 ? '0' : '') + minutes;
+        seconds = (seconds < 10 ? '0' : '') + seconds;
+
+        // Update the timer label
+        timerLabel.textContent = hours + ':' + minutes + ':' + seconds;
+
+        // Call the updateTimer function again to keep the timer live
+        requestAnimationFrame(updateTimer);
+    }
+
+    updateTimer();
+
+// Start updating the timer
+updateTimer();
    
 
     document.getElementById("button2").onclick = function() {
