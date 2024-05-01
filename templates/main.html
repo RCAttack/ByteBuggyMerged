@@ -40,6 +40,11 @@
     <br>
 
     <section class="attack">
+        <select id="method-select" class ="button-transparent">
+            <option>Select Cracking method</option>
+            <option>PMKID hashcat</option>
+            <option>WPA handshake</option>
+        </select>
         <button id="button4" class ="button-transparent" onclick="startPasswordCrack()" style = "border-radius: 5px;">Start Password Crack</button>
         <div>Time of completion: <span id="completion-time">00:00</span></div>
         <div>Password found: <span id="password-found">N/A</span></div>
@@ -59,7 +64,7 @@
     <br>
     <br>
 
-    <button onclick="runCommand()">Test terminal</button>
+    <button onclick="runCommand()" style = "border-radius: 5px;">Test terminal</button>
 
 
 </section>
@@ -79,7 +84,7 @@
     window.onload = function() {
     var buttons = document.querySelectorAll('.button-transparent');
     buttons.forEach(function(button) {
-        button.disabled = true; // Disable the button
+        button.disabled = true; // Disable the button/select element
        }); 
     };
 
@@ -118,11 +123,26 @@
     };
 
     document.getElementById("network-select").onchange = function() {
-        document.getElementById("button4").classList.remove("button-transparent");
-        document.getElementById("button4").classList.add("button-regular");
+        
         let selectedNetwork = document.getElementById("network-select").value;
         document.getElementById("log").value += "\n\nNetwork selected: " + selectedNetwork;
+
+        document.getElementById("method-select").disabled = false;
+        document.getElementById("method-select").classList.remove("button-transparent");
+        document.getElementById("method-select").classList.add("button-regular");
+
+    };
+
+    document.getElementById("method-select").onchange = function() {
+
+        let selectedMethod = document.getElementById("method-select").value;
+        document.getElementById("log").value += "\n\n Method selected: " + selectedMethod;
+
+
         button4.disabled = false;
+        document.getElementById("button4").classList.remove("button-transparent");
+        document.getElementById("button4").classList.add("button-regular");
+
     };
 
     document.getElementById("button4").onclick = function() {
