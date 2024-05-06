@@ -62,6 +62,10 @@ def help():
     
     return render_template('help.html',  args=args_dict)
 
+@app.route('/Terms of Conditions')
+def help():
+    return render_template('Terms of Conditions.html')
+
 @app.route('/run-command', methods=['POST'])
 def run_command():
     import subprocess
